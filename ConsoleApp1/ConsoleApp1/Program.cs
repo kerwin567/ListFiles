@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace FileSearch_Console
 {
     class ListAllFilesDemo
     {
+
         public static void Main(string[] args)
         {
             Console.Write("请输入要查询的目录:   ");
             string dir = Console.ReadLine();
+            string CsvPath = @"C:\Users\KerwinMbp\Desktop\work\aa.csv";
             try
             {
-                ListFiles(new DirectoryInfo(dir));
+                ListFiles(new DirectoryInfo(dir),CsvPath);
             }
             catch (IOException e)
             {
@@ -23,10 +26,11 @@ namespace FileSearch_Console
             }
             finally
             {
-                while (true) { };
+                Console.WriteLine("done");
+
             }
         }
-        public static void ListFiles(FileSystemInfo info)
+        public static void ListFiles(FileSystemInfo info,string csvpath)
         {
             if (!info.Exists) return;
 
@@ -34,19 +38,41 @@ namespace FileSearch_Console
             //不是目录 
             if (dir == null) return;
 
+
             FileSystemInfo[] files = dir.GetFileSystemInfos();
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo file = files[i] as FileInfo;
                 //是文件 
                 if (file != null)
-                    Console.WriteLine(file.FullName + "\t " + file.Length);
+                    SaveCSV(csvpath, file.FullName);
+                //Console.WriteLine(file.FullName + "\t " + file.Length);
                 //对于子目录，进行递归调用 
                 else
-                    ListFiles(files[i]);
-
+                    ListFiles(files[i],csvpath);
             }
         }
+        public static bool SaveCSV(string fullPath, string Data)
+        {
+            bool re = true;
+            try
+            {
+                FileStream FileStream = new FileStream(fullPath, FileMode.Append);
+                StreamWriter sw = new StreamWriter(FileStream, System.Text.Encoding.UTF8);
+                sw.WriteLine(Data);
+                //清空缓冲区
+                sw.Flush();
+                //关闭流
+                sw.Close();
+                FileStream.Close();
+            }
+            catch
+            {
+                re = false;
+            }
+            return re;
+        }
+
     }
 }
 
