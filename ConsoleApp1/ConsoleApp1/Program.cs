@@ -15,7 +15,8 @@ namespace FileSearch_Console
         {
             Console.Write("请输入要查询的目录:   ");
             string dir = Console.ReadLine();
-            string CsvPath = @"C:\Users\KerwinMbp\Desktop\work\aa.csv";
+            Console.Write("请输入需要导出的CSV文件地址（含文件名）：  ");
+            string CsvPath = Console.ReadLine();
             try
             {
                 ListFiles(new DirectoryInfo(dir),CsvPath);
