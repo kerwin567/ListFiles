@@ -15,8 +15,10 @@ namespace FileSearch_Console
         {
             try
             {
-                Console.Write("请输入要查询的目录:   ");
-                string directory = Console.ReadLine();
+                //Console.Write("请输入要查询的目录:   ");
+                //string directory = Console.ReadLine();
+                //DirectoryInfo dir = new DirectoryInfo(directory);
+                string directory = GetProjParantPath();
                 DirectoryInfo dir = new DirectoryInfo(directory);
                 if (!dir.Exists)
                 {
@@ -26,6 +28,7 @@ namespace FileSearch_Console
                 
                 Console.Write("请选择功能："+"\n"+"1.导出文件夹内所有文件的文件名至csv"+"\n"+"2.删除所有文件夹内的某个文件"+"\n");
                 int chose1 = Console.ReadKey().KeyChar;
+
                 switch (chose1)
                 {
                     case 49:
@@ -74,8 +77,9 @@ namespace FileSearch_Console
             }
             foreach (FileInfo i in infos)
             {
-                    // Save to csv.
-                    SaveCSV(CsvPath,i.FullName);
+                string data = i.Name + "," + i.FullName;
+                // Save to csv.
+                SaveCSV(CsvPath,data);
             }
         }
         public static void Deleaa(FileSystemInfo[] infos,string delefilename)
@@ -128,7 +132,7 @@ namespace FileSearch_Console
             try
             {
                 FileStream FileStream = new FileStream(fullPath, FileMode.Append);
-                StreamWriter sw = new StreamWriter(FileStream, System.Text.Encoding.UTF8);
+                StreamWriter sw = new StreamWriter(FileStream, System.Text.Encoding.Default);
                 sw.WriteLine(Data);
                 //清空缓冲区
                 sw.Flush();
@@ -141,6 +145,15 @@ namespace FileSearch_Console
                 re = false;
             }
             return re;
+        }
+        public static string GetProjParantPath()
+        {
+            //string ParantPath = "";
+            //获取当前应用程序路径
+            string BaseDirectoryPath = AppDomain.CurrentDomain.BaseDirectory;
+            string TempPath = BaseDirectoryPath.Substring(0, BaseDirectoryPath.LastIndexOf("\\"));
+            string ParantPath = BaseDirectoryPath.Substring(0, TempPath.LastIndexOf("\\"));
+            return ParantPath;
         }
 
     }
