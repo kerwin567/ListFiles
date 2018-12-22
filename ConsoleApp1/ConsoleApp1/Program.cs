@@ -136,7 +136,7 @@ namespace ListFileS
                 //过滤系统和隐藏文件
                 if (((i.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) && ((i.Attributes & FileAttributes.System) != FileAttributes.System))
                 {
-                    string data = i.Name + "," + i.FullName + "," + i.CreationTime;
+                    string data = i.Name + "," + i.FullName + "," + i.LastWriteTime;
                     // Save to csv.
                     SaveCSV(CsvPath, data);
                     FileSystem.DeleteFile(i.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
