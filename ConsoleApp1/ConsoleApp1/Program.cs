@@ -132,7 +132,7 @@ namespace ListFileS
             }
             foreach (DirectoryInfo i in directoryInfos)
             {
-
+                //过滤系统和隐藏文件
                 if (((i.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) && ((i.Attributes & FileAttributes.System) != FileAttributes.System))
                 {
                     DirectoryInfo dInfo = (DirectoryInfo)i;
@@ -143,6 +143,7 @@ namespace ListFileS
             }
             foreach (FileInfo i in infos)
             {
+                //过滤系统和隐藏文件
                 if (((i.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) && ((i.Attributes & FileAttributes.System) != FileAttributes.System))
                 {
                     string data = i.Name + "," + i.FullName;
@@ -158,19 +159,25 @@ namespace ListFileS
 
             foreach (DirectoryInfo i in directoryInfos)
             {
-                //if (((i.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) || ((i.Attributes & FileAttributes.System) == FileAttributes.System)) break;
-                DirectoryInfo dInfo = (DirectoryInfo)i;
+                //过滤系统和隐藏文件
+                if (((i.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) && ((i.Attributes & FileAttributes.System) != FileAttributes.System))
+                {
+                    DirectoryInfo dInfo = (DirectoryInfo)i;
 
-                // Iterate through all sub-directories.
-                DeleteFiles(dInfo.GetDirectories(), dInfo.GetFiles(SearchString), SearchString);
+                    // Iterate through all sub-directories.
+                    DeleteFiles(dInfo.GetDirectories(), dInfo.GetFiles(SearchString), SearchString);
+                }
             }
             foreach (FileInfo i in infos)
             {
-                //if (((i.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) || ((i.Attributes & FileAttributes.System) == FileAttributes.System)) break;
-                string data = i.Name + "," + i.FullName + "," + i.CreationTime;
-                // Save to csv.
-                SaveCSV(CsvPath, data);
-                FileSystem.DeleteFile(i.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                //过滤系统和隐藏文件
+                if (((i.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden) && ((i.Attributes & FileAttributes.System) != FileAttributes.System))
+                {
+                    string data = i.Name + "," + i.FullName + "," + i.CreationTime;
+                    // Save to csv.
+                    SaveCSV(CsvPath, data);
+                    FileSystem.DeleteFile(i.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                }
             }
         }
 
