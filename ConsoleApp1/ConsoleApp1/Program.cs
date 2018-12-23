@@ -47,36 +47,21 @@ namespace ListFiles
                 {
                     search = args[0];
                 }
-                Console.Write("请选择功能：" + "\n" + "1.导出文件夹内所有文件的文件名至csv" + "\n" + "2.删除所有文件夹内的某个文件" + "\n");
-                int chose1 = Console.ReadKey().KeyChar;
-                Console.WriteLine("\n"+"请输入需要操作的文件条件： "+"\n"+"例如："+"\n"+"*.pdf"+"\n"+"*.xls"+"\n"+"*.jpg");
-                search = Console.ReadLine();
+
                 DirectoryInfo[] directoryInfos = dir.GetDirectories();
                 FileInfo[] infos = dir.GetFiles(search);
-                switch (chose1)
-                {
-                    case 49:
+                ListDirectoriesAndFiles(directoryInfos, infos, csvPath, search);
 
-                        Console.WriteLine("Working...");
-                        ListDirectoriesAndFiles(directoryInfos, infos, csvPath, search);
-                        break;
-                    case 50:
-                        Console.WriteLine("Working...");
-                        DeleteFiles(directoryInfos, infos, csvPath, search);
-                        break;
-                }
             }
             catch (IOException e)
             {
                 Console.WriteLine(e.Message);
-                while (true)
-                { }
+                while (true) { }
             }
             finally
             {
                 Console.WriteLine("Done");
-                while (true)
-                { }
+                while (true) { }
             }
         }
 
@@ -144,30 +129,6 @@ namespace ListFiles
             }
         }
 
-        //循环删除文件夹内所有符合条件的文件
-        public static void Deleaa(FileSystemInfo[] infos, string delefilename)
-        {
-            if (infos == null) return;
-            if (delefilename == null || delefilename.Length == 0) return;
-            foreach (FileSystemInfo i in infos)
-            {
-                // Check to see if this is a DirectoryInfo object.
-                if (i is DirectoryInfo)
-                {
-                    // Cast the object to a DirectoryInfo object.
-                    DirectoryInfo dInfo = (DirectoryInfo)i;
-                    FileSystemInfo[] files = dInfo.GetFileSystemInfos();
-                    // Iterate through all sub-directories.
-                    Deleaa(files, delefilename);
-                }
-                // Check to see if this is a FileInfo object.
-                else if (i is FileInfo)
-                {
-                    // delete file
-                    FileSystem.DeleteFile(i.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                }
-            }
-        }
         //存储内容到csv文件
         public static bool SaveCSV(string fullPath, string Data)
         {
