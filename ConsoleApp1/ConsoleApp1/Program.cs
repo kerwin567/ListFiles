@@ -61,7 +61,6 @@ namespace ListFiles
             finally
             {
                 Console.WriteLine("Done");
-                while (true) { }
             }
         }
 
