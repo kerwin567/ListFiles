@@ -48,8 +48,14 @@ namespace ListFiles
                     search = args[0];
                 }
 
+                //添加csv表头
+                string data = "FileName" + "," + "FilePath" + "," + "LastWriteTime";
+                SaveCSV(csvPath, data);
+
+                //获取目录内的文件和子目录
                 DirectoryInfo[] directoryInfos = dir.GetDirectories();
                 FileInfo[] infos = dir.GetFiles(search);
+                //调用主函数
                 ListDirectoriesAndFiles(directoryInfos, infos, csvPath, search);
 
             }
@@ -135,7 +141,7 @@ namespace ListFiles
             try
             {
                 FileStream fileStream = new FileStream(fullPath, FileMode.Append);
-                StreamWriter sw = new StreamWriter(fileStream, System.Text.Encoding.Default);
+                StreamWriter sw = new StreamWriter(fileStream, System.Text.Encoding.UTF8);
                 sw.WriteLine(Data);
                 //清空缓冲区
                 sw.Flush();
